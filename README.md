@@ -72,3 +72,31 @@ Open a terminal in the project root directory.
 1. Open `index.html` in VS Code.
 2. Right-click and choose **Open with Live Server** (serves on `http://127.0.0.1:5500` or similar port).
 3. The frontend is fully connected to the FastAPI server running on `http://127.0.0.1:8000`.
+
+---
+
+## Vercel Deployment
+
+This project is configured to deploy directly to Vercel as a serverless Python application using standard configuration definitions.
+
+### Deployment Entrypoint
+* **FastAPI Entrypoint**: `backend.main:app`
+* **Configuration**: Configured in [pyproject.toml](file:///c:/Users/TUF/OneDrive/Desktop/ml_project/movie%20recommendation%20systtem/pyproject.toml) via the `[tool.vercel]` block.
+
+### Step-by-Step Vercel Deployment:
+
+1. **Commit and Push**: Ensure all files (including `pyproject.toml`) are pushed to your GitHub repository.
+2. **Import Repository**:
+   - Log in to Vercel and click **Add New** -> **Project**.
+   - Import your `Movie-Recommendation-System` repository.
+3. **Configure Environment Variables**:
+   - In Vercel's Project Settings, navigate to **Environment Variables**.
+   - Add a new variable:
+     - **Name**: `OMDB_API_KEY`
+     - **Value**: `[Your Real OMDb API Key]`
+   - Select the target environments (Production, Preview, Development) and click **Save**.
+4. **Deploy**: Click **Deploy**. Vercel will build the requirements, parse the entrypoint, and serve your application.
+
+> [!NOTE]
+> The local `.env` file is only for local development and is automatically ignored by Git. Vercel utilizes the production Environment Variables settings instead.
+
