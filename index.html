@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CineSense AI — Content-Based Movie Recommendation Engine</title>
+  <meta name="description" content="CineSense AI uses CountVectorizer and Cosine Similarity on 4,803 TMDB movies to recommend the top 5 most similar films based on metadata tags." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════ NAVBAR ═══════════════ -->
+  <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="navbar__inner container">
+      <a href="#" class="navbar__logo" aria-label="CineSense AI home">
+        <span class="navbar__logo-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+            <circle cx="14" cy="14" r="13" stroke="#E50914" stroke-width="2"/>
+            <circle cx="14" cy="14" r="6" fill="#E50914" opacity="0.8"/>
+            <path d="M14 1 L14 5 M14 23 L14 27 M1 14 L5 14 M23 14 L27 14" stroke="#E50914" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="navbar__logo-text">CineSense</span>
+        <span class="navbar__ai-badge">AI</span>
+      </a>
+      <ul class="navbar__links" id="navLinks">
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#recommend">Recommend</a></li>
+        <li><a href="#trending">Trending</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+      <button class="navbar__hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══════════════ HERO ═══════════════ -->
+  <header class="hero" id="hero">
+    <div class="hero__bg-effects" aria-hidden="true">
+      <div class="hero__orb hero__orb--red"></div>
+      <div class="hero__orb hero__orb--purple"></div>
+      <div class="hero__grain"></div>
+    </div>
+    <div class="hero__content container">
+      <div class="hero__text">
+        <p class="hero__eyebrow">Content-Based Recommendation Engine</p>
+        <h1 class="hero__headline">
+          Discover Films Through
+          <span class="hero__headline-gradient">AI-Powered</span>
+          Similarity Analysis
+        </h1>
+        <p class="hero__subtext">
+          CineSense AI transforms movie metadata into high-dimensional vectors, then measures the angular distance between them using Cosine Similarity to surface the most contextually relevant recommendations.
+        </p>
+        <div class="hero__stats">
+          <div class="hero__stat">
+            <span class="hero__stat-value">4,803+</span>
+            <span class="hero__stat-label">TMDB Movies</span>
+          </div>
+          <div class="hero__stat-divider" aria-hidden="true"></div>
+          <div class="hero__stat">
+            <span class="hero__stat-value">5,000</span>
+            <span class="hero__stat-label">Vector Features</span>
+          </div>
+          <div class="hero__stat-divider" aria-hidden="true"></div>
+          <div class="hero__stat">
+            <span class="hero__stat-value">Cosine</span>
+            <span class="hero__stat-label">Similarity Metric</span>
+          </div>
+        </div>
+        <a href="#recommend" class="hero__cta">
+          <span>Try Recommendations</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+      <div class="hero__visual" aria-hidden="true">
+        <div class="hero__card-cluster">
+          <div class="hero__card hero__card--center" data-movie-id="155">
+            <div class="hero__card-poster poster-wrapper">
+              <div class="poster-skeleton"></div>
+            </div>
+            <span class="hero__card-label">Selected Movie</span>
+          </div>
+          <div class="hero__card hero__card--tl" data-movie-id="49026">
+            <div class="hero__card-poster poster-wrapper">
+              <div class="poster-skeleton"></div>
+            </div>
+            <span class="hero__card-sim">94%</span>
+          </div>
+          <div class="hero__card hero__card--tr" data-movie-id="680">
+            <div class="hero__card-poster poster-wrapper">
+              <div class="poster-skeleton"></div>
+            </div>
+            <span class="hero__card-sim">89%</span>
+          </div>
+          <div class="hero__card hero__card--bl" data-movie-id="603">
+            <div class="hero__card-poster poster-wrapper">
+              <div class="poster-skeleton"></div>
+            </div>
+            <span class="hero__card-sim">82%</span>
+          </div>
+          <div class="hero__card hero__card--br" data-movie-id="577922">
+            <div class="hero__card-poster poster-wrapper">
+              <div class="poster-skeleton"></div>
+            </div>
+            <span class="hero__card-sim">76%</span>
+          </div>
+          <svg class="hero__connectors" viewBox="0 0 400 400" aria-hidden="true">
+            <line x1="200" y1="200" x2="80" y2="80" class="hero__connector-line"/>
+            <line x1="200" y1="200" x2="320" y2="80" class="hero__connector-line"/>
+            <line x1="200" y1="200" x2="80" y2="320" class="hero__connector-line"/>
+            <line x1="200" y1="200" x2="320" y2="320" class="hero__connector-line"/>
+          </svg>
+          <div class="hero__pulse-ring"></div>
+        </div>
+      </div>
+    </div>
+    <div class="hero__scroll-indicator" aria-hidden="true">
+      <span></span>
+    </div>
+  </header>
+
+  <!-- ═══════════════ RECOMMENDATION ENGINE ═══════════════ -->
+  <section class="recommend" id="recommend">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-header__tag">Recommendation Engine</span>
+        <h2 class="section-header__title">Find Your Next <span class="gradient-text">Favorite Film</span></h2>
+        <p class="section-header__sub">Search any movie from the TMDB 4,803 dataset and our cosine-similarity engine will surface the top 5 most contextually related films.</p>
+      </div>
+
+      <div class="recommend__engine">
+        <!-- Search Panel -->
+        <div class="recommend__search-panel glass-panel">
+          <label for="movieSearch" class="recommend__search-label">Search Movie Title</label>
+          <div class="recommend__search-wrap">
+            <svg class="recommend__search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+            <input
+              type="text"
+              id="movieSearch"
+              class="recommend__search-input"
+              placeholder="e.g. The Dark Knight, Avatar, Inception..."
+              autocomplete="off"
+              aria-label="Search for a movie title"
+              aria-autocomplete="list"
+              aria-controls="autocompleteList"
+              aria-expanded="false"
+            />
+            <button class="recommend__search-clear" id="searchClearBtn" aria-label="Clear search" style="display:none;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <ul class="recommend__autocomplete" id="autocompleteList" role="listbox" aria-label="Movie suggestions"></ul>
+
+          <!-- Selected Movie Preview -->
+          <div class="recommend__preview" id="moviePreview" style="display:none;">
+            <div class="recommend__preview-poster" id="previewPoster"></div>
+            <div class="recommend__preview-info">
+              <h3 class="recommend__preview-title" id="previewTitle"></h3>
+              <div class="recommend__preview-meta">
+                <span class="recommend__preview-rating" id="previewRating">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="#E50914" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                  <span id="previewRatingVal"></span>
+                </span>
+                <span class="recommend__preview-pop" id="previewPop"></span>
+              </div>
+              <p class="recommend__preview-tags" id="previewTags"></p>
+            </div>
+          </div>
+
+          <button class="recommend__generate-btn" id="generateBtn" disabled>
+            <span class="recommend__generate-btn-text">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+              </svg>
+              Generate AI Recommendations
+            </span>
+            <span class="recommend__generate-btn-loading" style="display:none;">
+              <span class="recommend__loading-spinner"></span>
+              <span class="recommend__loading-text">Vectorizing tags...</span>
+            </span>
+          </button>
+        </div>
+
+        <!-- Results -->
+        <div class="recommend__results" id="resultsContainer" style="display:none;">
+          <h3 class="recommend__results-title">
+            Top 5 Similar Movies to <span id="resultMovieName"></span>
+          </h3>
+          <div class="recommend__results-grid" id="resultsGrid">
+            <!-- JS-generated result cards -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ TRENDING ═══════════════ -->
+  <section class="trending" id="trending">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-header__tag">Trending Now</span>
+        <h2 class="section-header__title">Popular in the <span class="gradient-text">Dataset</span></h2>
+        <p class="section-header__sub">Top-rated and most popular movies from the TMDB 4,803 dataset ranked by a weighted score of vote average and popularity.</p>
+      </div>
+      <div class="trending__carousel-wrap">
+        <button class="trending__arrow trending__arrow--left" id="carouselLeft" aria-label="Scroll carousel left">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <div class="trending__carousel" id="trendingCarousel" role="region" aria-label="Trending movies carousel" tabindex="0">
+          <!-- JS-generated trending cards -->
+        </div>
+        <button class="trending__arrow trending__arrow--right" id="carouselRight" aria-label="Scroll carousel right">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ HOW IT THINKS ═══════════════ -->
+  <section class="pipeline" id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-header__tag">Under the Hood</span>
+        <h2 class="section-header__title">How CineSense <span class="gradient-text">Thinks</span></h2>
+        <p class="section-header__sub">A transparent look at the 4-step content-based filtering pipeline that powers every recommendation.</p>
+      </div>
+
+      <div class="pipeline__steps">
+        <div class="pipeline__step glass-panel" data-step="1">
+          <div class="pipeline__step-number">01</div>
+          <div class="pipeline__step-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#E50914" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+            </svg>
+          </div>
+          <h3 class="pipeline__step-title">Metadata Collection</h3>
+          <p class="pipeline__step-desc">Extract genres, keywords, overview, cast & director from each of the 4,803 TMDB movie records.</p>
+        </div>
+
+        <div class="pipeline__connector" aria-hidden="true">
+          <svg width="40" height="24" viewBox="0 0 40 24"><path d="M0 12h36M30 6l6 6-6 6" stroke="#E50914" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/></svg>
+        </div>
+
+        <div class="pipeline__step glass-panel" data-step="2">
+          <div class="pipeline__step-number">02</div>
+          <div class="pipeline__step-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/>
+            </svg>
+          </div>
+          <h3 class="pipeline__step-title">Tag Engineering</h3>
+          <p class="pipeline__step-desc">Lowercase, stem (NLTK PorterStemmer), and merge all fields into a single <code>tags</code> string per movie.</p>
+        </div>
+
+        <div class="pipeline__connector" aria-hidden="true">
+          <svg width="40" height="24" viewBox="0 0 40 24"><path d="M0 12h36M30 6l6 6-6 6" stroke="#7C3AED" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/></svg>
+        </div>
+
+        <div class="pipeline__step glass-panel" data-step="3">
+          <div class="pipeline__step-number">03</div>
+          <div class="pipeline__step-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#E50914" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+            </svg>
+          </div>
+          <h3 class="pipeline__step-title">Vectorization</h3>
+          <p class="pipeline__step-desc">CountVectorizer transforms the tags corpus into a sparse 4,803 × 5,000 term-frequency matrix.</p>
+        </div>
+
+        <div class="pipeline__connector" aria-hidden="true">
+          <svg width="40" height="24" viewBox="0 0 40 24"><path d="M0 12h36M30 6l6 6-6 6" stroke="#E50914" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/></svg>
+        </div>
+
+        <div class="pipeline__step glass-panel" data-step="4">
+          <div class="pipeline__step-number">04</div>
+          <div class="pipeline__step-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><path d="M12 12 L18 8" stroke-width="2"/><path d="M12 12 L8 6" stroke-width="2"/>
+            </svg>
+          </div>
+          <h3 class="pipeline__step-title">Cosine Similarity</h3>
+          <p class="pipeline__step-desc">Measure the angular distance between the selected movie's vector and all 4,802 others; return the top 5.</p>
+        </div>
+      </div>
+
+      <!-- Vector Angle Visual & Formula -->
+      <div class="pipeline__formula-card glass-panel">
+        <div class="pipeline__vector-visual" aria-label="Vector angle visualization showing two vectors A and B with angle theta between them">
+          <svg viewBox="0 0 200 160" width="200" height="160" aria-hidden="true">
+            <defs>
+              <marker id="arrowA" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#E50914"/></marker>
+              <marker id="arrowB" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#7C3AED"/></marker>
+            </defs>
+            <!-- Axis -->
+            <line x1="30" y1="130" x2="180" y2="130" stroke="#2A2A35" stroke-width="1"/>
+            <line x1="30" y1="130" x2="30" y2="10" stroke="#2A2A35" stroke-width="1"/>
+            <!-- Vector A -->
+            <line x1="30" y1="130" x2="170" y2="70" stroke="#E50914" stroke-width="2.5" marker-end="url(#arrowA)" class="pipeline__vec pipeline__vec--a"/>
+            <text x="165" y="60" fill="#E50914" font-size="14" font-weight="700" font-family="Inter">A</text>
+            <!-- Vector B -->
+            <line x1="30" y1="130" x2="140" y2="25" stroke="#7C3AED" stroke-width="2.5" marker-end="url(#arrowB)" class="pipeline__vec pipeline__vec--b"/>
+            <text x="143" y="20" fill="#7C3AED" font-size="14" font-weight="700" font-family="Inter">B</text>
+            <!-- Angle arc -->
+            <path d="M 70 108 A 50 50 0 0 1 60 90" stroke="#A1A1AA" stroke-width="1.5" fill="none" stroke-dasharray="3 2"/>
+            <text x="72" y="96" fill="#A1A1AA" font-size="12" font-style="italic" font-family="Inter">θ</text>
+          </svg>
+        </div>
+        <div class="pipeline__formula">
+          <p class="pipeline__formula-label">Cosine Similarity Formula</p>
+          <div class="pipeline__formula-math">
+            <span class="pipeline__formula-fn">cos(θ)</span>
+            <span class="pipeline__formula-eq">=</span>
+            <span class="pipeline__formula-frac">
+              <span class="pipeline__formula-num">A · B</span>
+              <span class="pipeline__formula-denom">‖A‖ ‖B‖</span>
+            </span>
+          </div>
+          <p class="pipeline__formula-note">When cos(θ) → 1, the movies are highly similar in their tag-vector space.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ STATS (IntersectionObserver) ═══════════════ -->
+  <section class="stats" id="stats">
+    <div class="container">
+      <div class="stats__grid">
+        <div class="stats__item glass-panel">
+          <span class="stats__number" data-target="4803">0</span>
+          <span class="stats__label">Movies Indexed</span>
+        </div>
+        <div class="stats__item glass-panel">
+          <span class="stats__number" data-target="5000">0</span>
+          <span class="stats__label">Vector Dimensions</span>
+        </div>
+        <div class="stats__item glass-panel">
+          <span class="stats__number" data-target="5">0</span>
+          <span class="stats__label">Recommendations / Query</span>
+        </div>
+        <div class="stats__item glass-panel">
+          <span class="stats__number" data-target="23">0</span>
+          <span class="stats__label">Million Similarity Pairs</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ ABOUT ═══════════════ -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-header__tag">Technology Stack</span>
+        <h2 class="section-header__title">Built With <span class="gradient-text">Precision</span></h2>
+        <p class="section-header__sub">The tools and techniques behind CineSense AI's content-based recommendation pipeline.</p>
+      </div>
+
+      <div class="about__grid">
+        <div class="about__card glass-panel">
+          <h3 class="about__card-title">What CineSense AI Does</h3>
+          <p class="about__card-text">CineSense AI is a <strong>content-based movie recommendation system</strong>. It analyzes 4,803 TMDB movies by engineering a composite <code>tags</code> field from genres, keywords, overview, cast, and director. These tags are stemmed using NLTK's PorterStemmer, vectorized into a 5,000-dimension sparse matrix via CountVectorizer, and compared with Cosine Similarity to find the top 5 most similar films for any query.</p>
+          <p class="about__card-text">This is <em>not</em> a classifier — there is no training/test split, no accuracy or precision metrics. The PKL file stores a preprocessed similarity matrix, not a trained model.</p>
+        </div>
+
+        <div class="about__card glass-panel">
+          <h3 class="about__card-title">Tech Stack</h3>
+          <div class="about__badges">
+            <span class="about__badge about__badge--python">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.373 0 5.373 3.068 5.373 3.068v3.18H12.2v.936H3.305S0 6.666 0 12.048c0 5.382 2.885 5.191 2.885 5.191h1.722v-2.498s-.093-2.885 2.837-2.885h4.889s2.748.044 2.748-2.66V4.107S15.506 0 12 0zm-2.71 2.375a.883.883 0 110 1.767.883.883 0 010-1.767z"/><path d="M12 24c6.627 0 6.627-3.068 6.627-3.068v-3.18H11.8v-.936h8.895S24 17.334 24 11.952c0-5.382-2.885-5.191-2.885-5.191h-1.722v2.498s.093 2.885-2.837 2.885h-4.889s-2.748-.044-2.748 2.66v5.089S8.494 24 12 24zm2.71-2.375a.883.883 0 110-1.767.883.883 0 010 1.767z"/></svg>
+              Python
+            </span>
+            <span class="about__badge about__badge--pandas">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="7" y="1" width="3" height="9" rx="1"/><rect x="7" y="14" width="3" height="9" rx="1"/><rect x="14" y="5" width="3" height="9" rx="1"/><rect x="14" y="18" width="3" height="5" rx="1"/><rect x="7" y="11.5" width="3" height="1.5" rx=".5"/><rect x="14" y="1" width="3" height="3" rx="1"/></svg>
+              Pandas
+            </span>
+            <span class="about__badge about__badge--sklearn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="6" cy="12" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><line x1="8.5" y1="11" x2="15.5" y2="7" stroke="currentColor" stroke-width="1.5"/><line x1="8.5" y1="13" x2="15.5" y2="17" stroke="currentColor" stroke-width="1.5"/></svg>
+              Scikit-learn
+            </span>
+            <span class="about__badge about__badge--nltk">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 17h4v-4H3v4zm0-6h4V7H3v4zm6 6h4v-4H9v4zm0-6h4V7H9v4zm6 6h4v-4h-4v4zm0-6h4V7h-4v4z"/></svg>
+              NLTK
+            </span>
+            <span class="about__badge about__badge--cv">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="3" width="5" height="5" rx="1"/><rect x="10" y="3" width="5" height="5" rx="1"/><rect x="17" y="3" width="4" height="5" rx="1"/><rect x="3" y="10" width="5" height="5" rx="1"/><rect x="10" y="10" width="5" height="5" rx="1"/><rect x="3" y="17" width="5" height="4" rx="1"/></svg>
+              CountVectorizer
+            </span>
+            <span class="about__badge about__badge--cosine">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 12 L18 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 12 L8 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              Cosine Similarity
+            </span>
+            <span class="about__badge about__badge--tmdb">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 12.5c-2.49 0-4.5-2.01-4.5-4.5S9.51 7.5 12 7.5s4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5z"/></svg>
+              TMDB Dataset
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ FOOTER ═══════════════ -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <div class="footer__brand">
+          <span class="navbar__logo-text">CineSense</span>
+          <span class="navbar__ai-badge">AI</span>
+          <p class="footer__tagline">Content-based movie recommendations powered by Cosine Similarity.</p>
+        </div>
+        <div class="footer__links">
+          <a href="#hero">Home</a>
+          <a href="#recommend">Recommend</a>
+          <a href="#trending">Trending</a>
+          <a href="#how-it-works">How It Works</a>
+          <a href="#about">About</a>
+        </div>
+        <div class="footer__bottom">
+          <p>&copy; 2026 CineSense AI. Built as a data-science portfolio project.</p>
+          <p class="footer__data-credit">Movie data from <strong>TMDB 5000 Movie Dataset</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════════ MOVIE DETAIL MODAL ═══════════════ -->
+  <div class="modal-overlay" id="movieModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" style="display:none;">
+    <div class="modal glass-panel">
+      <button class="modal__close" id="modalCloseBtn" aria-label="Close movie details">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="modal__poster" id="modalPoster"></div>
+      <div class="modal__body">
+        <h2 class="modal__title" id="modalTitle"></h2>
+        <div class="modal__meta">
+          <span class="modal__rating" id="modalRating">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#E50914" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <span id="modalRatingVal"></span>
+          </span>
+          <span class="modal__popularity" id="modalPopularity"></span>
+          <span class="modal__similarity-badge" id="modalSimilarity" style="display:none;"></span>
+        </div>
+        <p class="modal__overview" id="modalOverview"></p>
+        <div class="modal__tags" id="modalTags"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
