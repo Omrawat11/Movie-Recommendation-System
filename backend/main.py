@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 # Load environment variables from .env
@@ -57,11 +58,16 @@ app.add_middleware(
 recommender = MovieRecommender()
 omdb_service = OMDbService()
 
+# Frontend file paths (resolved from project root)
+INDEX_FILE = BASE_DIR / "index.html"
+STYLE_FILE = BASE_DIR / "style.css"
+SCRIPT_FILE = BASE_DIR / "script.js"
+ASSETS_DIR = BASE_DIR / "assets"
+
 # Serve assets folder
-assets_dir = BASE_DIR / "assets"
-if not assets_dir.exists():
-    assets_dir.mkdir(parents=True, exist_ok=True)
-app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
+if not ASSETS_DIR.exists():
+    ASSETS_DIR.mkdir(parents=True, exist_ok=True)
+app.mount("/assets", StaticFiles(directory=str(ASSETS_DIR)), name="assets")
 
 
 def clean_val(val, default):
@@ -96,8 +102,27 @@ def parse_movie_display(row: pd.Series, omdb_data: dict) -> MovieDisplay:
     )
 
 
-@app.get("/")
-def read_root():
+@app.get("/", include_in_schema=False)
+async def serve_frontend():
+    """Serve the CineSense AI frontend."""
+    return FileResponse(str(INDEX_FILE))
+
+
+@app.get("/style.css", include_in_schema=False)
+async def serve_css():
+    """Serve the frontend stylesheet."""
+    return FileResponse(str(STYLE_FILE), media_type="text/css")
+
+
+@app.get("/script.js", include_in_schema=False)
+async def serve_javascript():
+    """Serve the frontend JavaScript."""
+    return FileResponse(str(SCRIPT_FILE), media_type="application/javascript")
+
+
+@app.get("/api")
+def api_root():
+    """API status endpoint."""
     return {
         "name": "CineSense AI API",
         "status": "running"
