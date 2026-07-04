@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 450" width="300" height="450">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#16161D" />
+      <stop offset="100%" stop-color="#07070A" />
+    </linearGradient>
+    
+    <!-- Red/Purple Glow Gradient -->
+    <radialGradient id="glow" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#7C3AED" stop-opacity="0.15" />
+      <stop offset="50%" stop-color="#E50914" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#07070A" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="300" height="450" fill="url(#bg)" />
+  <rect width="300" height="450" fill="url(#glow)" />
+  
+  <!-- Subtle Border Glow -->
+  <rect x="1" y="1" width="298" height="448" fill="none" stroke="rgba(255, 255, 255, 0.05)" stroke-width="2" rx="14" ry="14" />
+  
+  <!-- Minimal Clapperboard Icon -->
+  <g transform="translate(118, 140)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Clapperboard top (slanted) -->
+    <path d="M 0,15 L 64,-3 L 64,5 L 0,23 Z" fill="#E50914" opacity="0.8"/>
+    <!-- Stripes on slanted top -->
+    <path d="M 12,11 L 20,9" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
+    <path d="M 28,7 L 36,5" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
+    <path d="M 44,3 L 52,1" stroke="#ffffff" stroke-width="2" opacity="0.6"/>
+    
+    <!-- Clapperboard base -->
+    <rect x="0" y="24" width="64" height="46" rx="4" fill="#16161D" stroke="#7C3AED" stroke-width="2" />
+    <line x1="0" y1="36" x2="64" y2="36" stroke="#7C3AED" stroke-width="1.5" />
+    <!-- Clapperboard stripes base -->
+    <path d="M 10,24 L 20,36" stroke="#ffffff" stroke-width="1.5" opacity="0.4"/>
+    <path d="M 30,24 L 40,36" stroke="#ffffff" stroke-width="1.5" opacity="0.4"/>
+    <path d="M 50,24 L 60,36" stroke="#ffffff" stroke-width="1.5" opacity="0.4"/>
+    <!-- Star icon on board -->
+    <path d="M 32,44 L 34,48 L 39,49 L 35,53 L 36,58 L 32,55 L 28,58 L 29,53 L 25,49 L 30,48 Z" fill="#E50914" />
+  </g>
+
+  <!-- Typography -->
+  <text x="150" y="270" text-anchor="middle" font-family="'Inter', system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" letter-spacing="0.1em" opacity="0.9">POSTER NOT AVAILABLE</text>
+  <text x="150" y="295" text-anchor="middle" font-family="'Inter', system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#A1A1AA" letter-spacing="0.2em" opacity="0.5">CineSense AI</text>
+</svg>

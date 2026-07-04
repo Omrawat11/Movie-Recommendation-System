@@ -58,10 +58,7 @@ app.add_middleware(
 recommender = MovieRecommender()
 omdb_service = OMDbService()
 
-# Frontend file paths (resolved from project root)
-INDEX_FILE = BASE_DIR / "index.html"
-STYLE_FILE = BASE_DIR / "style.css"
-SCRIPT_FILE = BASE_DIR / "script.js"
+# Assets directory
 ASSETS_DIR = BASE_DIR / "assets"
 
 # Serve assets folder
@@ -102,22 +99,7 @@ def parse_movie_display(row: pd.Series, omdb_data: dict) -> MovieDisplay:
     )
 
 
-@app.get("/", include_in_schema=False)
-async def serve_frontend():
-    """Serve the CineSense AI frontend."""
-    return FileResponse(str(INDEX_FILE))
 
-
-@app.get("/style.css", include_in_schema=False)
-async def serve_css():
-    """Serve the frontend stylesheet."""
-    return FileResponse(str(STYLE_FILE), media_type="text/css")
-
-
-@app.get("/script.js", include_in_schema=False)
-async def serve_javascript():
-    """Serve the frontend JavaScript."""
-    return FileResponse(str(SCRIPT_FILE), media_type="application/javascript")
 
 
 @app.get("/api")
@@ -271,3 +253,10 @@ async def get_movie_by_id(movie_id: int):
 
     omdb_data = await omdb_service.get_movie_details(row["title"])
     return parse_movie_display(row, omdb_data)
+
+
+# Serve static frontend files (HTML, CSS, JS) at the root for local development only
+# This is placed at the end of the file so it only handles requests that don't match any API route
+PUBLIC_DIR = BASE_DIR / "public"
+if PUBLIC_DIR.exists():
+    app.mount("/", StaticFiles(directory=str(PUBLIC_DIR), html=True), name="public")
