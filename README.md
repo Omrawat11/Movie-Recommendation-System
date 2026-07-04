@@ -77,15 +77,15 @@ Open a terminal in the project root directory.
 
 ## Vercel Deployment
 
-This project is configured to deploy directly to Vercel as a serverless Python application using standard configuration definitions.
+This project is configured to deploy directly to Vercel as a serverless Python application.
 
 ### Deployment Entrypoint
-* **FastAPI Entrypoint**: `backend.main:app`
-* **Configuration**: Configured in [pyproject.toml](file:///c:/Users/TUF/OneDrive/Desktop/ml_project/movie%20recommendation%20systtem/pyproject.toml) via the `[tool.vercel]` block.
+* **FastAPI Entrypoint**: `index.py` (re-exports `backend.main:app`)
+* **Routing**: Configured in `vercel.json`
 
 ### Step-by-Step Vercel Deployment:
 
-1. **Commit and Push**: Ensure all files (including `pyproject.toml`) are pushed to your GitHub repository.
+1. **Commit and Push**: Ensure all files (including `index.py` and `vercel.json`) are pushed to your GitHub repository.
 2. **Import Repository**:
    - Log in to Vercel and click **Add New** -> **Project**.
    - Import your `Movie-Recommendation-System` repository.
@@ -95,7 +95,7 @@ This project is configured to deploy directly to Vercel as a serverless Python a
      - **Name**: `OMDB_API_KEY`
      - **Value**: `[Your Real OMDb API Key]`
    - Select the target environments (Production, Preview, Development) and click **Save**.
-4. **Deploy**: Click **Deploy**. Vercel will build the requirements, parse the entrypoint, and serve your application.
+4. **Deploy**: Click **Deploy**. Vercel will install the requirements, detect the Python entrypoint, and serve your application.
 
 > [!NOTE]
 > The local `.env` file is only for local development and is automatically ignored by Git. Vercel utilizes the production Environment Variables settings instead.
